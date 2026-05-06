@@ -93,7 +93,8 @@ nav {
   display: flex; align-items: center; gap: 4px;
   list-style: none;
 }
-.nav-links a {
+.nav-links a,
+.nav-btn {
   color: var(--text-muted);
   text-decoration: none;
   font-size: 0.82rem;
@@ -101,8 +102,13 @@ nav {
   padding: 6px 12px;
   border-radius: 6px;
   transition: color 0.2s, background 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
 }
-.nav-links a:hover { color: var(--text); background: var(--bg3); }
+.nav-links a:hover,
+.nav-btn:hover { color: var(--text); background: var(--bg3); }
 .nav-right { display: flex; align-items: center; gap: 10px; }
 .theme-btn {
   background: var(--bg3);
@@ -611,11 +617,84 @@ footer a:hover { text-decoration: underline; }
 #back-top.visible { opacity: 1; transform: translateY(0); }
 #back-top:hover { transform: translateY(-3px); }
 
+/* ─── Connections Section ───────────────────────────────────── */
+.connections-section { background: var(--bg2); }
+.lang-tabs {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 28px;
+}
+.lang-tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg3);
+  color: var(--text-muted);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.83rem; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.lang-tab:hover { color: var(--text); border-color: rgba(88,166,255,0.3); }
+.lang-tab.active {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+}
+.lang-tab .lang-icon { font-size: 1rem; }
+.lang-panel { display: none; animation: fadeUp 0.3s ease; }
+.lang-panel.active { display: block; }
+.lang-panel-header {
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 24px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius) var(--radius) 0 0;
+  border-bottom: none;
+}
+.lang-panel-header .lang-badge {
+  width: 48px; height: 48px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; flex-shrink: 0;
+}
+.lang-panel-header h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem; font-weight: 700;
+  margin-bottom: 4px;
+}
+.lang-panel-header p { font-size: 0.82rem; color: var(--text-muted); }
+.lang-install {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 3px 10px;
+  color: var(--accent2);
+  margin-top: 6px;
+}
+.lang-codes {
+  border: 1px solid var(--border);
+  border-radius: 0 0 var(--radius) var(--radius);
+  overflow: hidden;
+}
+.lang-codes .code-wrap {
+  border-radius: 0; border: none;
+  border-top: 1px solid var(--border);
+  margin: 0;
+  box-shadow: none;
+}
+.lang-codes .code-wrap:first-child { border-top: none; }
+.lang-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.lang-grid .code-wrap { border-right: 1px solid var(--border); }
+.lang-grid .code-wrap:last-child { border-right: none; }
+
 /* ─── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .nav-links { display: none; position: absolute; top: 62px; left: 0; right: 0; flex-direction: column; background: var(--bg2); border-bottom: 1px solid var(--border); padding: 12px 0; gap: 0; }
   .nav-links.open { display: flex; }
-  .nav-links a { padding: 12px 24px; border-radius: 0; width: 100%; }
+  .nav-links a, .nav-btn { padding: 12px 24px; border-radius: 0; width: 100%; display: block; text-align: left; }
   .hamburger { display: flex; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .pros-grid { grid-template-columns: 1fr; }
@@ -623,6 +702,8 @@ footer a:hover { text-decoration: underline; }
   .demo-input-col { border-right: none; border-bottom: 1px solid var(--border); }
   .hero-stats { gap: 24px; }
   section { padding: 56px 0; }
+  .lang-grid { grid-template-columns: 1fr; }
+  .lang-grid .code-wrap { border-right: none; border-top: 1px solid var(--border); }
 }
 @media (max-width: 500px) {
   .hero h1 { font-size: 2.2rem; }
@@ -637,16 +718,17 @@ footer a:hover { text-decoration: underline; }
 
 <!-- Navigation -->
 <nav>
-  <a href="#hero" class="nav-logo">
+  <span onclick="goTo('hero')" class="nav-logo" style="cursor:pointer">
     SQLite<span class="logo-badge">GUIDE</span>
-  </a>
+  </span>
   <ul class="nav-links" id="nav-links">
-    <li><a href="#intro">Intro</a></li>
-    <li><a href="#how-to">How to Use</a></li>
-    <li><a href="#crud">CRUD</a></li>
-    <li><a href="#demo">Demo</a></li>
-    <li><a href="#advantages">Pros & Cons</a></li>
-    <li><a href="#conclusion">Conclusion</a></li>
+    <li><button class="nav-btn" onclick="goTo('intro')">Intro</button></li>
+    <li><button class="nav-btn" onclick="goTo('how-to')">How to Use</button></li>
+    <li><button class="nav-btn" onclick="goTo('crud')">CRUD</button></li>
+    <li><button class="nav-btn" onclick="goTo('demo')">Demo</button></li>
+    <li><button class="nav-btn" onclick="goTo('connections')">Connections</button></li>
+    <li><button class="nav-btn" onclick="goTo('advantages')">Pros & Cons</button></li>
+    <li><button class="nav-btn" onclick="goTo('conclusion')">Conclusion</button></li>
   </ul>
   <div class="nav-right">
     <button class="theme-btn" id="theme-btn" title="Toggle theme">☀️</button>
@@ -663,8 +745,8 @@ footer a:hover { text-decoration: underline; }
     <h1>Learn <span>SQLite</span><br>From Zero to Hero</h1>
     <p class="hero-sub">A self-contained, serverless, zero-configuration SQL database engine. Understand it fully in one page.</p>
     <div class="hero-cta">
-      <a href="#intro" class="btn btn-primary">Start Learning →</a>
-      <a href="#crud" class="btn btn-ghost">Jump to CRUD</a>
+      <button onclick="goTo('intro')" class="btn btn-primary">Start Learning →</button>
+      <button onclick="goTo('crud')" class="btn btn-ghost">Jump to CRUD</button>
     </div>
     <div class="hero-stats">
       <div class="stat"><div class="stat-num">1B+</div><div class="stat-label">Deployments</div></div>
@@ -1189,10 +1271,710 @@ conn = sqlite3.<span class="fn">connect</span>(<span class="str">":memory:"</spa
   </div>
 </section>
 
+<!-- Connections Section -->
+<section class="connections-section" id="connections">
+  <div class="container">
+    <div class="section-label">06 / Integrations</div>
+    <h2 class="section-title">SQLite with Popular Languages</h2>
+    <p class="section-sub">Connect SQLite to any language or framework — it takes just a few lines of code to get started.</p>
+
+    <!-- Language Tab Buttons -->
+    <div class="lang-tabs">
+      <button class="lang-tab active" onclick="showLang('python', this)"><span class="lang-icon">🐍</span> Python</button>
+      <button class="lang-tab" onclick="showLang('php', this)"><span class="lang-icon">🐘</span> PHP</button>
+      <button class="lang-tab" onclick="showLang('java', this)"><span class="lang-icon">☕</span> Java</button>
+      <button class="lang-tab" onclick="showLang('dotnet', this)"><span class="lang-icon">💜</span> .NET / C#</button>
+      <button class="lang-tab" onclick="showLang('nodejs', this)"><span class="lang-icon">🟩</span> Node.js</button>
+      <button class="lang-tab" onclick="showLang('react', this)"><span class="lang-icon">⚛️</span> React</button>
+      <button class="lang-tab" onclick="showLang('angular', this)"><span class="lang-icon">🔺</span> Angular</button>
+      <button class="lang-tab" onclick="showLang('flutter', this)"><span class="lang-icon">💙</span> Flutter</button>
+      <button class="lang-tab" onclick="showLang('go', this)"><span class="lang-icon">🐹</span> Go</button>
+      <button class="lang-tab" onclick="showLang('rust', this)"><span class="lang-icon">🦀</span> Rust</button>
+    </div>
+
+    <!-- Python -->
+    <div class="lang-panel active" id="lang-python">
+      <div class="lang-panel-header">
+        <div class="lang-badge" style="background:rgba(255,212,59,0.12)">🐍</div>
+        <div>
+          <h3>Python + SQLite3</h3>
+          <p>Built into Python's standard library — no installation needed. Uses the <code>sqlite3</code> module.</p>
+          <span class="lang-install">✓ Built-in — no pip required</span>
+        </div>
+      </div>
+      <div class="lang-codes">
+        <div class="lang-grid">
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Connect & Create Table</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre><span class="kw">import</span> sqlite3
+
+<span class="cmt"># Connect (creates file if not exists)</span>
+conn = sqlite3.<span class="fn">connect</span>(<span class="str">"mydb.sqlite"</span>)
+cur  = conn.<span class="fn">cursor</span>()
+
+<span class="cmt"># Create table</span>
+cur.<span class="fn">execute</span>(<span class="str">"""
+  CREATE TABLE IF NOT EXISTS users (
+    id    INTEGER PRIMARY KEY AUTOINCREMENT,
+    name  TEXT NOT NULL,
+    email TEXT UNIQUE
+  )
+"""</span>)
+conn.<span class="fn">commit</span>()
+<span class="fn">print</span>(<span class="str">"Table ready!"</span>)</pre>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">CRUD Operations</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre><span class="cmt"># INSERT</span>
+cur.<span class="fn">execute</span>(<span class="str">"INSERT INTO users (name, email) VALUES (?, ?)"</span>,
+           (<span class="str">"Alice"</span>, <span class="str">"alice@example.com"</span>))
+conn.<span class="fn">commit</span>()
+
+<span class="cmt"># SELECT</span>
+cur.<span class="fn">execute</span>(<span class="str">"SELECT * FROM users"</span>)
+rows = cur.<span class="fn">fetchall</span>()
+<span class="kw">for</span> row <span class="kw">in</span> rows:
+    <span class="fn">print</span>(row)
+
+<span class="cmt"># UPDATE</span>
+cur.<span class="fn">execute</span>(<span class="str">"UPDATE users SET name=? WHERE id=?"</span>, (<span class="str">"Bob"</span>, <span class="num">1</span>))
+
+<span class="cmt"># DELETE</span>
+cur.<span class="fn">execute</span>(<span class="str">"DELETE FROM users WHERE id=?"</span>, (<span class="num">1</span>,))
+conn.<span class="fn">commit</span>()
+conn.<span class="fn">close</span>()</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHP -->
+    <div class="lang-panel" id="lang-php">
+      <div class="lang-panel-header">
+        <div class="lang-badge" style="background:rgba(119,123,180,0.12)">🐘</div>
+        <div>
+          <h3>PHP + PDO / SQLite3</h3>
+          <p>PHP has two ways to connect: the <code>SQLite3</code> class and the more flexible <code>PDO</code> abstraction layer.</p>
+          <span class="lang-install">extension=pdo_sqlite  ← enable in php.ini</span>
+        </div>
+      </div>
+      <div class="lang-codes">
+        <div class="lang-grid">
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">PDO Connection</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre><span class="fn">&lt;?php</span>
+<span class="kw">try</span> {
+    <span class="cmt">// Connect via PDO</span>
+    $pdo = <span class="kw">new</span> <span class="fn">PDO</span>(<span class="str">"sqlite:mydb.sqlite"</span>);
+    $pdo-&gt;<span class="fn">setAttribute</span>(
+        PDO::ATTR_ERRMODE,
+        PDO::ERRMODE_EXCEPTION
+    );
+
+    <span class="cmt">// Create table</span>
+    $pdo-&gt;<span class="fn">exec</span>(<span class="str">"CREATE TABLE IF NOT EXISTS users (
+        id    INTEGER PRIMARY KEY AUTOINCREMENT,
+        name  TEXT NOT NULL,
+        email TEXT UNIQUE
+    )"</span>);
+
+    <span class="fn">echo</span> <span class="str">"Connected successfully!"</span>;
+} <span class="kw">catch</span> (PDOException $e) {
+    <span class="fn">echo</span> <span class="str">"Error: "</span> . $e-&gt;getMessage();
+}</pre>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Insert & Select (PDO)</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre><span class="cmt">// INSERT with prepared statement</span>
+$stmt = $pdo-&gt;<span class="fn">prepare</span>(
+    <span class="str">"INSERT INTO users (name, email) VALUES (?, ?)"</span>
+);
+$stmt-&gt;<span class="fn">execute</span>([<span class="str">'Alice'</span>, <span class="str">'alice@mail.com'</span>]);
+
+<span class="cmt">// SELECT all rows</span>
+$stmt = $pdo-&gt;<span class="fn">query</span>(<span class="str">"SELECT * FROM users"</span>);
+<span class="kw">while</span> ($row = $stmt-&gt;<span class="fn">fetch</span>(PDO::FETCH_ASSOC)) {
+    <span class="fn">echo</span> $row[<span class="str">'name'</span>] . <span class="str">' — '</span> . $row[<span class="str">'email'</span>] . <span class="str">"\n"</span>;
+}
+
+<span class="cmt">// UPDATE</span>
+$pdo-&gt;<span class="fn">prepare</span>(<span class="str">"UPDATE users SET name=? WHERE id=?"</span>)
+    -&gt;<span class="fn">execute</span>([<span class="str">'Bob'</span>, <span class="num">1</span>]);</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Java -->
+    <div class="lang-panel" id="lang-java">
+      <div class="lang-panel-header">
+        <div class="lang-badge" style="background:rgba(240,136,62,0.12)">☕</div>
+        <div>
+          <h3>Java + SQLite JDBC</h3>
+          <p>Use the <strong>sqlite-jdbc</strong> driver by Xerial. Add it via Maven or Gradle — then connect with standard JDBC.</p>
+          <span class="lang-install">Maven: org.xerial:sqlite-jdbc:3.45.3.0</span>
+        </div>
+      </div>
+      <div class="lang-codes">
+        <div class="lang-grid">
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">pom.xml dependency</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre><span class="cmt">&lt;!-- Maven pom.xml --&gt;</span>
+&lt;<span class="fn">dependency</span>&gt;
+  &lt;<span class="fn">groupId</span>&gt;org.xerial&lt;/<span class="fn">groupId</span>&gt;
+  &lt;<span class="fn">artifactId</span>&gt;sqlite-jdbc&lt;/<span class="fn">artifactId</span>&gt;
+  &lt;<span class="fn">version</span>&gt;3.45.3.0&lt;/<span class="fn">version</span>&gt;
+&lt;/<span class="fn">dependency</span>&gt;
+
+<span class="cmt">// Gradle</span>
+implementation <span class="str">'org.xerial:sqlite-jdbc:3.45.3.0'</span></pre>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Connect & Query</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre><span class="kw">import</span> java.sql.*;
+
+<span class="kw">public class</span> <span class="fn">Main</span> {
+  <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) <span class="kw">throws</span> Exception {
+    String url = <span class="str">"jdbc:sqlite:mydb.sqlite"</span>;
+
+    <span class="kw">try</span> (Connection con = DriverManager.<span class="fn">getConnection</span>(url);
+         Statement st  = con.<span class="fn">createStatement</span>()) {
+
+      <span class="cmt">// Create</span>
+      st.<span class="fn">execute</span>(<span class="str">"CREATE TABLE IF NOT EXISTS users "</span> +
+                 <span class="str">"(id INTEGER PRIMARY KEY, name TEXT)"</span>);
+
+      <span class="cmt">// Insert</span>
+      st.<span class="fn">execute</span>(<span class="str">"INSERT INTO users VALUES (1,'Alice')"</span>);
+
+      <span class="cmt">// Select</span>
+      ResultSet rs = st.<span class="fn">executeQuery</span>(<span class="str">"SELECT * FROM users"</span>);
+      <span class="kw">while</span> (rs.<span class="fn">next</span>())
+        System.out.<span class="fn">println</span>(rs.<span class="fn">getString</span>(<span class="str">"name"</span>));
+    }
+  }
+}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- .NET / C# -->
+    <div class="lang-panel" id="lang-dotnet">
+      <div class="lang-panel-header">
+        <div class="lang-badge" style="background:rgba(188,140,255,0.12)">💜</div>
+        <div>
+          <h3>.NET / C# + Microsoft.Data.Sqlite</h3>
+          <p>Microsoft's official lightweight SQLite provider, or use <strong>Entity Framework Core</strong> with <code>Sqlite</code> provider for ORM support.</p>
+          <span class="lang-install">dotnet add package Microsoft.Data.Sqlite</span>
+        </div>
+      </div>
+      <div class="lang-codes">
+        <div class="lang-grid">
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Connect & Create</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre><span class="kw">using</span> Microsoft.Data.Sqlite;
+
+<span class="kw">var</span> connection = <span class="kw">new</span> <span class="fn">SqliteConnection</span>(
+    <span class="str">"Data Source=mydb.sqlite"</span>);
+connection.<span class="fn">Open</span>();
+
+<span class="kw">var</span> cmd = connection.<span class="fn">CreateCommand</span>();
+cmd.CommandText = <span class="str">@"
+  CREATE TABLE IF NOT EXISTS users (
+    Id    INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name  TEXT NOT NULL,
+    Email TEXT UNIQUE
+  )"</span>;
+cmd.<span class="fn">ExecuteNonQuery</span>();
+<span class="fn">Console</span>.<span class="fn">WriteLine</span>(<span class="str">"Table created!"</span>);</pre>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Insert & Read</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="cmt">// INSERT</span>
+<span class="kw">var</span> insert = connection.<span class="fn">CreateCommand</span>();
+insert.CommandText =
+    <span class="str">"INSERT INTO users (Name, Email) VALUES ($name, $email)"</span>;
+insert.Parameters.<span class="fn">AddWithValue</span>(<span class="str">"$name"</span>,  <span class="str">"Alice"</span>);
+insert.Parameters.<span class="fn">AddWithValue</span>(<span class="str">"$email"</span>, <span class="str">"alice@mail.com"</span>);
+insert.<span class="fn">ExecuteNonQuery</span>();
+
+<span class="cmt">// SELECT</span>
+<span class="kw">var</span> select = connection.<span class="fn">CreateCommand</span>();
+select.CommandText = <span class="str">"SELECT * FROM users"</span>;
+<span class="kw">using var</span> reader = select.<span class="fn">ExecuteReader</span>();
+<span class="kw">while</span> (reader.<span class="fn">Read</span>()) {
+    <span class="fn">Console</span>.<span class="fn">WriteLine</span>($<span class="str">"{reader["Name"]} — {reader["Email"]}"</span>);
+}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Node.js -->
+    <div class="lang-panel" id="lang-nodejs">
+      <div class="lang-panel-header">
+        <div class="lang-badge" style="background:rgba(63,185,80,0.12)">🟩</div>
+        <div>
+          <h3>Node.js + better-sqlite3</h3>
+          <p><strong>better-sqlite3</strong> is the fastest and easiest SQLite library for Node — synchronous API, no callbacks needed.</p>
+          <span class="lang-install">npm install better-sqlite3</span>
+        </div>
+      </div>
+      <div class="lang-codes">
+        <div class="lang-grid">
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Connect & Setup</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="kw">const</span> Database = <span class="fn">require</span>(<span class="str">'better-sqlite3'</span>);
+
+<span class="cmt">// Open (or create) database file</span>
+<span class="kw">const</span> db = <span class="kw">new</span> <span class="fn">Database</span>(<span class="str">'mydb.sqlite'</span>);
+
+<span class="cmt">// Create table</span>
+db.<span class="fn">exec</span>(<span class="str">`
+  CREATE TABLE IF NOT EXISTS users (
+    id    INTEGER PRIMARY KEY AUTOINCREMENT,
+    name  TEXT NOT NULL,
+    email TEXT UNIQUE
+  )
+`</span>);
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Database ready!'</span>);</pre>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">CRUD Operations</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="cmt">// INSERT</span>
+<span class="kw">const</span> insert = db.<span class="fn">prepare</span>(
+  <span class="str">'INSERT INTO users (name, email) VALUES (?, ?)'</span>
+);
+insert.<span class="fn">run</span>(<span class="str">'Alice'</span>, <span class="str">'alice@mail.com'</span>);
+
+<span class="cmt">// SELECT all</span>
+<span class="kw">const</span> rows = db.<span class="fn">prepare</span>(<span class="str">'SELECT * FROM users'</span>).<span class="fn">all</span>();
+<span class="fn">console</span>.<span class="fn">log</span>(rows);
+
+<span class="cmt">// SELECT one</span>
+<span class="kw">const</span> user = db.<span class="fn">prepare</span>(<span class="str">'SELECT * FROM users WHERE id=?'</span>).<span class="fn">get</span>(<span class="num">1</span>);
+
+<span class="cmt">// UPDATE</span>
+db.<span class="fn">prepare</span>(<span class="str">'UPDATE users SET name=? WHERE id=?'</span>).<span class="fn">run</span>(<span class="str">'Bob'</span>, <span class="num">1</span>);
+
+<span class="cmt">// DELETE</span>
+db.<span class="fn">prepare</span>(<span class="str">'DELETE FROM users WHERE id=?'</span>).<span class="fn">run</span>(<span class="num">1</span>);</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- React -->
+    <div class="lang-panel" id="lang-react">
+      <div class="lang-panel-header">
+        <div class="lang-badge" style="background:rgba(97,218,251,0.10)">⚛️</div>
+        <div>
+          <h3>React + sql.js (Browser) or Electron</h3>
+          <p>In browser React apps use <strong>sql.js</strong> (SQLite compiled to WebAssembly). For desktop React (Electron), use <strong>better-sqlite3</strong> from the main process.</p>
+          <span class="lang-install">npm install sql.js  &nbsp;|&nbsp;  npm install @sqlite.org/sqlite-wasm</span>
+        </div>
+      </div>
+      <div class="lang-codes">
+        <div class="lang-grid">
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">React Hook — sql.js (Browser)</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="kw">import</span> { useEffect, useState } <span class="kw">from</span> <span class="str">'react'</span>;
+<span class="kw">import</span> initSqlJs <span class="kw">from</span> <span class="str">'sql.js'</span>;
+
+<span class="kw">export default function</span> <span class="fn">App</span>() {
+  <span class="kw">const</span> [rows, setRows] = <span class="fn">useState</span>([]);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="fn">initSqlJs</span>({ locateFile: f =&gt; <span class="str">`/sql-wasm.wasm`</span> })
+      .<span class="fn">then</span>(SQL =&gt; {
+        <span class="kw">const</span> db = <span class="kw">new</span> SQL.<span class="fn">Database</span>();
+        db.<span class="fn">run</span>(<span class="str">`CREATE TABLE users
+               (id INTEGER PRIMARY KEY, name TEXT)`</span>);
+        db.<span class="fn">run</span>(<span class="str">`INSERT INTO users VALUES (1,'Alice'),(2,'Bob')`</span>);
+        <span class="kw">const</span> res = db.<span class="fn">exec</span>(<span class="str">'SELECT * FROM users'</span>);
+        <span class="fn">setRows</span>(res[<span class="num">0</span>]?.values || []);
+      });
+  }, []);
+
+  <span class="kw">return</span> &lt;ul&gt;{rows.<span class="fn">map</span>(r =&gt; &lt;li key={r[<span class="num">0</span>]}&gt;{r[<span class="num">1</span>]}&lt;/li&gt;)}&lt;/ul&gt;;
+}</pre>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Electron Main Process</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="cmt">// main.js (Electron main process)</span>
+<span class="kw">const</span> Database = <span class="fn">require</span>(<span class="str">'better-sqlite3'</span>);
+<span class="kw">const</span> { ipcMain } = <span class="fn">require</span>(<span class="str">'electron'</span>);
+
+<span class="kw">const</span> db = <span class="kw">new</span> <span class="fn">Database</span>(<span class="str">'app.sqlite'</span>);
+
+<span class="cmt">// Expose query to renderer via IPC</span>
+ipcMain.<span class="fn">handle</span>(<span class="str">'db:query'</span>, (_, sql, params) =&gt; {
+  <span class="kw">return</span> db.<span class="fn">prepare</span>(sql).<span class="fn">all</span>(...params);
+});
+
+<span class="cmt">// In React renderer:</span>
+<span class="cmt">// const rows = await ipcRenderer.invoke(</span>
+<span class="cmt">//   'db:query', 'SELECT * FROM users', []);</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Angular -->
+    <div class="lang-panel" id="lang-angular">
+      <div class="lang-panel-header">
+        <div class="lang-badge" style="background:rgba(221,0,49,0.10)">🔺</div>
+        <div>
+          <h3>Angular + sql.js / Capacitor</h3>
+          <p>For Angular web apps use <strong>sql.js</strong>. For mobile Angular (Ionic/Capacitor) use the <strong>@capacitor-community/sqlite</strong> plugin for native SQLite access.</p>
+          <span class="lang-install">npm install sql.js  &nbsp;|&nbsp;  npm install @capacitor-community/sqlite</span>
+        </div>
+      </div>
+      <div class="lang-codes">
+        <div class="lang-grid">
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Angular Service — sql.js</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="kw">import</span> { Injectable } <span class="kw">from</span> <span class="str">'@angular/core'</span>;
+<span class="kw">import</span> initSqlJs, { Database } <span class="kw">from</span> <span class="str">'sql.js'</span>;
+
+@<span class="fn">Injectable</span>({ providedIn: <span class="str">'root'</span> })
+<span class="kw">export class</span> <span class="fn">SqliteService</span> {
+  <span class="kw">private</span> db!: Database;
+
+  <span class="kw">async</span> <span class="fn">init</span>() {
+    <span class="kw">const</span> SQL = <span class="kw">await</span> <span class="fn">initSqlJs</span>({
+      locateFile: f =&gt; <span class="str">`assets/</span>${f}<span class="str">`</span>
+    });
+    <span class="kw">this</span>.db = <span class="kw">new</span> SQL.<span class="fn">Database</span>();
+    <span class="kw">this</span>.db.<span class="fn">run</span>(<span class="str">`CREATE TABLE IF NOT EXISTS users
+                (id INTEGER PRIMARY KEY, name TEXT)`</span>);
+  }
+
+  <span class="fn">getAll</span>() {
+    <span class="kw">return this</span>.db.<span class="fn">exec</span>(<span class="str">'SELECT * FROM users'</span>);
+  }
+}</pre>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Component Usage</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="kw">import</span> { Component, OnInit } <span class="kw">from</span> <span class="str">'@angular/core'</span>;
+<span class="kw">import</span> { SqliteService }    <span class="kw">from</span> <span class="str">'./sqlite.service'</span>;
+
+@<span class="fn">Component</span>({
+  selector: <span class="str">'app-root'</span>,
+  template: <span class="str">`
+    &lt;ul&gt;
+      &lt;li *ngFor="let row of rows"&gt;{{ row[0] }} — {{ row[1] }}&lt;/li&gt;
+    &lt;/ul&gt;
+  `</span>
+})
+<span class="kw">export class</span> <span class="fn">AppComponent</span> <span class="kw">implements</span> OnInit {
+  rows: <span class="kw">any</span>[] = [];
+
+  <span class="fn">constructor</span>(<span class="kw">private</span> sql: SqliteService) {}
+
+  <span class="kw">async</span> <span class="fn">ngOnInit</span>() {
+    <span class="kw">await this</span>.sql.<span class="fn">init</span>();
+    <span class="kw">this</span>.sql.db.<span class="fn">run</span>(<span class="str">"INSERT INTO users VALUES (1,'Alice')"</span>);
+    <span class="kw">const</span> res = <span class="kw">this</span>.sql.<span class="fn">getAll</span>();
+    <span class="kw">this</span>.rows = res[<span class="num">0</span>]?.values || [];
+  }
+}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flutter -->
+    <div class="lang-panel" id="lang-flutter">
+      <div class="lang-panel-header">
+        <div class="lang-badge" style="background:rgba(84,182,242,0.12)">💙</div>
+        <div>
+          <h3>Flutter + sqflite</h3>
+          <p><strong>sqflite</strong> is the standard SQLite plugin for Flutter — works on Android, iOS, and macOS natively.</p>
+          <span class="lang-install">flutter pub add sqflite path</span>
+        </div>
+      </div>
+      <div class="lang-codes">
+        <div class="lang-grid">
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Open Database</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="kw">import</span> <span class="str">'package:sqflite/sqflite.dart'</span>;
+<span class="kw">import</span> <span class="str">'package:path/path.dart'</span>;
+
+Future&lt;Database&gt; <span class="fn">openDb</span>() <span class="kw">async</span> {
+  <span class="kw">final</span> path = <span class="kw">await</span> <span class="fn">getDatabasesPath</span>();
+  <span class="kw">return</span> <span class="fn">openDatabase</span>(
+    <span class="fn">join</span>(path, <span class="str">'mydb.db'</span>),
+    version: <span class="num">1</span>,
+    onCreate: (db, version) {
+      <span class="kw">return</span> db.<span class="fn">execute</span>(<span class="str">'''
+        CREATE TABLE users (
+          id    INTEGER PRIMARY KEY AUTOINCREMENT,
+          name  TEXT NOT NULL,
+          email TEXT
+        )
+      '''</span>);
+    },
+  );
+}</pre>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">CRUD with sqflite</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="kw">final</span> db = <span class="kw">await</span> <span class="fn">openDb</span>();
+
+<span class="cmt">// INSERT</span>
+<span class="kw">await</span> db.<span class="fn">insert</span>(<span class="str">'users'</span>, {
+  <span class="str">'name'</span>: <span class="str">'Alice'</span>,
+  <span class="str">'email'</span>: <span class="str">'alice@mail.com'</span>
+});
+
+<span class="cmt">// SELECT</span>
+<span class="kw">final</span> rows = <span class="kw">await</span> db.<span class="fn">query</span>(<span class="str">'users'</span>);
+<span class="fn">print</span>(rows);
+
+<span class="cmt">// UPDATE</span>
+<span class="kw">await</span> db.<span class="fn">update</span>(<span class="str">'users'</span>, {<span class="str">'name'</span>: <span class="str">'Bob'</span>},
+  where: <span class="str">'id = ?'</span>, whereArgs: [<span class="num">1</span>]);
+
+<span class="cmt">// DELETE</span>
+<span class="kw">await</span> db.<span class="fn">delete</span>(<span class="str">'users'</span>,
+  where: <span class="str">'id = ?'</span>, whereArgs: [<span class="num">1</span>]);</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Go -->
+    <div class="lang-panel" id="lang-go">
+      <div class="lang-panel-header">
+        <div class="lang-badge" style="background:rgba(0,173,216,0.12)">🐹</div>
+        <div>
+          <h3>Go + modernc.org/sqlite</h3>
+          <p>Use the pure-Go <strong>modernc.org/sqlite</strong> driver — no CGo required. Works with the standard <code>database/sql</code> interface.</p>
+          <span class="lang-install">go get modernc.org/sqlite</span>
+        </div>
+      </div>
+      <div class="lang-codes">
+        <div class="lang-grid">
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Connect & Create</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="kw">package</span> main
+
+<span class="kw">import</span> (
+    <span class="str">"database/sql"</span>
+    <span class="str">"log"</span>
+    _ <span class="str">"modernc.org/sqlite"</span>
+)
+
+<span class="kw">func</span> <span class="fn">main</span>() {
+    db, err := sql.<span class="fn">Open</span>(<span class="str">"sqlite"</span>, <span class="str">"mydb.sqlite"</span>)
+    <span class="kw">if</span> err != <span class="kw">nil</span> { log.<span class="fn">Fatal</span>(err) }
+    <span class="kw">defer</span> db.<span class="fn">Close</span>()
+
+    _, err = db.<span class="fn">Exec</span>(<span class="str">`CREATE TABLE IF NOT EXISTS users (
+        id   INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+    )`</span>)
+    <span class="kw">if</span> err != <span class="kw">nil</span> { log.<span class="fn">Fatal</span>(err) }
+}</pre>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Insert & Query</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="cmt">// INSERT</span>
+db.<span class="fn">Exec</span>(<span class="str">"INSERT INTO users (name) VALUES (?)"</span>, <span class="str">"Alice"</span>)
+
+<span class="cmt">// SELECT</span>
+rows, _ := db.<span class="fn">Query</span>(<span class="str">"SELECT id, name FROM users"</span>)
+<span class="kw">defer</span> rows.<span class="fn">Close</span>()
+
+<span class="kw">for</span> rows.<span class="fn">Next</span>() {
+    <span class="kw">var</span> id   int
+    <span class="kw">var</span> name string
+    rows.<span class="fn">Scan</span>(&id, &name)
+    log.<span class="fn">Printf</span>(<span class="str">"%d — %s\n"</span>, id, name)
+}
+
+<span class="cmt">// UPDATE / DELETE</span>
+db.<span class="fn">Exec</span>(<span class="str">"UPDATE users SET name=? WHERE id=?"</span>, <span class="str">"Bob"</span>, <span class="num">1</span>)
+db.<span class="fn">Exec</span>(<span class="str">"DELETE FROM users WHERE id=?"</span>, <span class="num">1</span>)</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rust -->
+    <div class="lang-panel" id="lang-rust">
+      <div class="lang-panel-header">
+        <div class="lang-badge" style="background:rgba(248,105,76,0.12)">🦀</div>
+        <div>
+          <h3>Rust + rusqlite</h3>
+          <p><strong>rusqlite</strong> is the de-facto SQLite crate for Rust — ergonomic, safe, and fast with optional Tokio async support.</p>
+          <span class="lang-install">cargo add rusqlite --features bundled</span>
+        </div>
+      </div>
+      <div class="lang-codes">
+        <div class="lang-grid">
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">Cargo.toml + Connect</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="cmt"># Cargo.toml</span>
+[dependencies]
+rusqlite = { version = <span class="str">"0.31"</span>, features = [<span class="str">"bundled"</span>] }
+
+<span class="cmt">// main.rs</span>
+<span class="kw">use</span> rusqlite::{Connection, Result};
+
+<span class="kw">fn</span> <span class="fn">main</span>() -> Result&lt;()&gt; {
+    <span class="kw">let</span> conn = Connection::<span class="fn">open</span>(<span class="str">"mydb.sqlite"</span>)?;
+
+    conn.<span class="fn">execute</span>(<span class="str">"CREATE TABLE IF NOT EXISTS users (
+        id   INTEGER PRIMARY KEY,
+        name TEXT NOT NULL
+    )"</span>, [])?;
+
+    Ok(())
+}</pre>
+          </div>
+          <div class="code-wrap">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-lang">CRUD with rusqlite</span>
+              <button class="copy-btn" onclick="copyCode(this)">copy</button>
+            </div>
+            <pre"><span class="cmt">// INSERT</span>
+conn.<span class="fn">execute</span>(
+    <span class="str">"INSERT INTO users (name) VALUES (?1)"</span>,
+    rusqlite::<span class="fn">params!</span>[<span class="str">"Alice"</span>]
+)?;
+
+<span class="cmt">// SELECT</span>
+<span class="kw">let mut</span> stmt = conn.<span class="fn">prepare</span>(<span class="str">"SELECT id, name FROM users"</span>)?;
+<span class="kw">let</span> users = stmt.<span class="fn">query_map</span>([], |row| {
+    Ok((row.<span class="fn">get</span>::&lt;_, i64&gt;(<span class="num">0</span>)?, row.<span class="fn">get</span>::&lt;_, String&gt;(<span class="num">1</span>)?))
+})?;
+<span class="kw">for</span> user <span class="kw">in</span> users {
+    <span class="fn">println!</span>(<span class="str">"{:?}"</span>, user?);
+}
+
+<span class="cmt">// UPDATE / DELETE</span>
+conn.<span class="fn">execute</span>(<span class="str">"UPDATE users SET name=?1 WHERE id=?2"</span>, [<span class="str">"Bob"</span>, <span class="str">"1"</span>])?;
+conn.<span class="fn">execute</span>(<span class="str">"DELETE FROM users WHERE id=?1"</span>, [<span class="str">"1"</span>])?;</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Compare Table -->
+    <div class="table-wrap" style="margin-top:40px">
+      <table>
+        <thead>
+          <tr>
+            <th>Language</th>
+            <th>Package / Driver</th>
+            <th>Install Command</th>
+            <th>Built-in?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>🐍 Python</td><td>sqlite3</td><td>—</td><td style="color:var(--accent3)">✅ Yes</td></tr>
+          <tr><td>🐘 PHP</td><td>PDO_SQLite / SQLite3</td><td>enable in php.ini</td><td style="color:var(--accent3)">✅ Yes</td></tr>
+          <tr><td>☕ Java</td><td>sqlite-jdbc (Xerial)</td><td>Maven / Gradle</td><td style="color:var(--red)">❌ No</td></tr>
+          <tr><td>💜 .NET / C#</td><td>Microsoft.Data.Sqlite</td><td>dotnet add package</td><td style="color:var(--red)">❌ No</td></tr>
+          <tr><td>🟩 Node.js</td><td>better-sqlite3</td><td>npm install</td><td style="color:var(--red)">❌ No</td></tr>
+          <tr><td>⚛️ React</td><td>sql.js (browser) / better-sqlite3 (Electron)</td><td>npm install</td><td style="color:var(--red)">❌ No</td></tr>
+          <tr><td>🔺 Angular</td><td>sql.js / @capacitor-community/sqlite</td><td>npm install</td><td style="color:var(--red)">❌ No</td></tr>
+          <tr><td>💙 Flutter</td><td>sqflite</td><td>flutter pub add</td><td style="color:var(--red)">❌ No</td></tr>
+          <tr><td>🐹 Go</td><td>modernc.org/sqlite</td><td>go get</td><td style="color:var(--red)">❌ No</td></tr>
+          <tr><td>🦀 Rust</td><td>rusqlite</td><td>cargo add</td><td style="color:var(--red)">❌ No</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
 <!-- 6. Conclusion -->
+
 <section class="conclusion" id="conclusion">
   <div class="container">
-    <div class="section-label">06 / Conclusion</div>
+    <div class="section-label">07 / Conclusion</div>
     <h2 class="section-title">When to Use SQLite</h2>
     <p class="section-sub">SQLite isn't trying to replace PostgreSQL — it's solving a different problem entirely.</p>
 
@@ -1228,7 +2010,7 @@ conn = sqlite3.<span class="fn">connect</span>(<span class="str">":memory:"</spa
 <!-- Footer -->
 <footer>
   <div class="container">
-    <p>Built as a learning resource · SQLite is developed by <a href="https://www.sqlite.org" target="_blank">sqlite.org</a> · Public Domain</p>
+    <p>Built as a learning resource · SQLite is developed by <strong>sqlite.org</strong> · Public Domain</p>
     <p style="margin-top:8px">SQLite Guide · Beginner Edition · 2024</p>
   </div>
 </footer>
@@ -1237,6 +2019,13 @@ conn = sqlite3.<span class="fn">connect</span>(<span class="str">":memory:"</spa
 <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
 
 <script>
+// ─── Smooth Scroll Helper ─────────────────────────────────────
+function goTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('nav-links').classList.remove('open');
+}
+
 // ─── Theme Toggle ─────────────────────────────────────────────
 const html = document.documentElement;
 const themeBtn = document.getElementById('theme-btn');
@@ -1251,9 +2040,6 @@ themeBtn.addEventListener('click', () => {
 document.getElementById('hamburger').addEventListener('click', () => {
   document.getElementById('nav-links').classList.toggle('open');
 });
-document.querySelectorAll('.nav-links a').forEach(a => {
-  a.addEventListener('click', () => document.getElementById('nav-links').classList.remove('open'));
-});
 
 // ─── Progress Bar ─────────────────────────────────────────────
 window.addEventListener('scroll', () => {
@@ -1262,6 +2048,14 @@ window.addEventListener('scroll', () => {
   document.getElementById('progress-bar').style.width = (scrollTop / scrollHeight * 100) + '%';
   document.getElementById('back-top').classList.toggle('visible', scrollTop > 300);
 });
+
+// ─── Language Tabs ────────────────────────────────────────────
+function showLang(id, btn) {
+  document.querySelectorAll('.lang-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('lang-' + id).classList.add('active');
+  btn.classList.add('active');
+}
 
 // ─── CRUD Tabs ────────────────────────────────────────────────
 function showCrud(id, btn) {
@@ -1450,7 +2244,7 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1 });
 
-document.querySelectorAll('.card, .pro-item, .con-item, .when-card, .step-item').forEach(el => {
+document.querySelectorAll('.card, .pro-item, .con-item, .when-card, .step-item, .lang-tab').forEach(el => {
   el.style.opacity = 0;
   el.style.transform = 'translateY(20px)';
   el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
